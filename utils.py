@@ -8,7 +8,6 @@ from google.cloud import datastore
 def check_signature(sig, data, secret):
     secret = "2nq0tw2ajiadhykzfg1t1csqq1w68vyk"
     signature_header = sig.replace("sha1=", "")
-    print(signature_header)
     signature_content = hmac.new(
         key=secret.encode("utf-8"), msg=data, digestmod=hashlib.sha1
     ).hexdigest()
@@ -40,6 +39,8 @@ def store_document(client, document):
         task_key = client.key("AX-NLG-Text", pk)
         task = datastore.Entity(key=task_key)
         task["description"] = f"collection: {cid}, uid: {uid}, language: {language}"
+        task["collection_id"] = cid
+        task["uid"] = uid
         task["created"] = document.get("text_modified")
         task["data"] = document
         client.put(task)
@@ -49,6 +50,8 @@ def store_document(client, document):
         # tests
         return {
             "pk": pk,
+            "collection_id": cid,
+            "uid": uid,
             "created": document.get("text_modified"),
             "description": f"collection: {cid}, uid: {uid}, language: {language}",
             "data": document,

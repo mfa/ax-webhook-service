@@ -67,8 +67,10 @@ def test_get(client):
 def test_post(client, signature, document):
     result = client.simulate_post("/", headers=signature, json=document)
     r = result.json
-    assert r.keys() == {"pk", "created", "description", "data"}
+    assert r.keys() == {"pk", "created", "description", "data", "collection_id", "uid"}
     assert r["data"] == document
+    assert r["uid"] == document.get("uid")
+    assert r["collection_id"] == document.get("collection_id")
     assert r["pk"].split("|") == [
         str(document.get("collection_id")),
         document.get("uid"),
