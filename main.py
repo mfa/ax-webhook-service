@@ -32,12 +32,14 @@ class WebhookResource:
     def on_post(self, req, resp):
         data = req.bounded_stream.read()
         document = json.loads(data)
-        secret = webhook_secrets[document.get("collection_id")]
+        collection_id = document.get("collection_id")
+        secret = webhook_secrets[collection_id]
         signature = req.get_header("X-MYAX-SIGNATURE")
-        if not check_signature(signature, data, secret):
-            print("CHECK FAILED!", flush=True)
-
-        resp.body = json.dumps(store_document(datastore_client, document))
+        if check_signature(signature, data, secret):
+            resp.body = json.dumps(store_document(datastore_client, document))
+        else:
+            print(f"signature check failed for collection: {collection_id}")
+            resp.status = falcon.HTTP_FORBIDDEN
 
 
 api = falcon.API()

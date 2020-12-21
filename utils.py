@@ -6,13 +6,7 @@ from google.cloud import datastore
 
 
 def check_signature(sig, data, secret):
-    secret = "2nq0tw2ajiadhykzfg1t1csqq1w68vyk"
-    signature_header = sig.replace("sha1=", "")
-    signature_content = hmac.new(
-        key=secret.encode("utf-8"), msg=data, digestmod=hashlib.sha1
-    ).hexdigest()
     try:
-        secret = "2nq0tw2ajiadhykzfg1t1csqq1w68vyk"
         signature_header = sig.replace("sha1=", "")
         signature_content = hmac.new(
             key=secret.encode("utf-8"), msg=data, digestmod=hashlib.sha1

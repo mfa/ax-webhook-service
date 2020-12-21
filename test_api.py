@@ -4,7 +4,8 @@ import json
 
 import pytest
 import yaml
-from falcon import testing
+import falcon
+import falcon.testing
 
 import main
 
@@ -54,7 +55,7 @@ def signature(document, secret):
 
 @pytest.fixture()
 def client():
-    return testing.TestClient(main.api)
+    return falcon.testing.TestClient(main.api)
 
 
 def test_get(client):
@@ -75,3 +76,11 @@ def test_post(client, signature, document):
         str(document.get("collection_id")),
         document.get("uid"),
     ]
+
+
+def test_post_wrong_signature(client, signature, document):
+    signature = {
+        "X-MYAX-SIGNATURE": "sha1=abc",
+    }
+    result = client.simulate_post("/", headers=signature, json=document)
+    assert result.status == falcon.HTTP_FORBIDDEN
