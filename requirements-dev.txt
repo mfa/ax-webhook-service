@@ -1,0 +1,5 @@
+-i requirements.txt
+
+pytest==6.2.1
+black
+isort
