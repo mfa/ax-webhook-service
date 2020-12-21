@@ -4,7 +4,7 @@ This is not an official AX Semantics repository!
 
 ### about
 
-This Python webservice accepts webhooks from [AX Semantics](https://nlg.ax) and runs on Google Cloud Run.
+This Python webservice runs on [Google Cloud Run](https://cloud.google.com/run/) and accepts webhooks from [AX Semantics](https://nlg.ax).
 The texts received by this service are stored in [Google Datastore](https://cloud.google.com/datastore/).
 
 
@@ -26,17 +26,26 @@ The texts received by this service are stored in [Google Datastore](https://clou
 
 add your collection configuration to ``collections.yml``.
 
-needs: google-cloud-sdk 321.0
+needs ``google-cloud-sdk`` in version 321.0 for deployment
 
 ```
 gcloud beta run deploy ax-webhook --source=. --allow-unauthenticated
 ```
 
-if successful return at the end:
+if successful returns at the end the Service URL:
 
 ```
 Service [ax-webhook] revision [ax-webhook-00001-abc] has been deployed and is serving 100 percent of traffic.
 Service URL: https://ax-webhook-xxxxxxx-ez.a.run.app
 ```
 
-Add the Service URL as webhook url in to the collection in the AX Semantics system.
+Add this Service URL as webhook url in to the collection in the AX Semantics system.
+
+
+### tests
+
+run tests:
+
+```
+python -m pytest
+```
