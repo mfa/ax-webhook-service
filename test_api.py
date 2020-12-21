@@ -16,6 +16,7 @@ def collection_id():
 
 @pytest.fixture
 def document(collection_id):
+    assert isinstance(collection_id, int)
     yield {
         "id": "52ab6993-3f2e-46f7-b501-4fabdffa7178",
         "uid": "1001",
@@ -39,6 +40,7 @@ def secret(collection_id):
 
 @pytest.fixture
 def signature(document, secret):
+    assert secret
     digest = hmac.new(
         key=secret.encode(),
         msg=json.dumps(document).encode(),
