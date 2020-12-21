@@ -4,7 +4,7 @@ This is not an official AX Semantics repository!
 
 ### about
 
-This Python webservice runs on [Google Cloud Run](https://cloud.google.com/run/) and accepts webhooks from [AX Semantics](https://nlg.ax).
+This Python webservice runs on [Google Cloud Run](https://cloud.google.com/run/) and accepts webhooks from [AX Semantics](https://nlg.ax).  
 The texts received by this service are stored in [Google Datastore](https://cloud.google.com/datastore/).
 
 
