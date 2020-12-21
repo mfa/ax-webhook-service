@@ -2,10 +2,10 @@ import hashlib
 import hmac
 import json
 
-import pytest
-import yaml
 import falcon
 import falcon.testing
+import pytest
+import yaml
 
 import main
 
@@ -68,7 +68,14 @@ def test_get(client):
 def test_post(client, signature, document):
     result = client.simulate_post("/", headers=signature, json=document)
     r = result.json
-    assert r.keys() == {"pk", "collection_id", "uid", "last_update", "description", "data"}
+    assert r.keys() == {
+        "pk",
+        "collection_id",
+        "uid",
+        "last_update",
+        "description",
+        "data",
+    }
     assert r["data"] == document
     assert r["uid"] == document.get("uid")
     assert r["collection_id"] == document.get("collection_id")
