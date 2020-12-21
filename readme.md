@@ -1,5 +1,7 @@
 ## AX Webhook Service
 
+![Run Tests](https://github.com/mfa/ax-webhook-service/workflows/Run%20Tests/badge.svg)
+
 This is not an official AX Semantics repository!
 
 ### about
