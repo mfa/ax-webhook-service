@@ -41,7 +41,7 @@ def store_document(client, document):
         task["description"] = f"collection: {cid}, uid: {uid}, language: {language}"
         task["collection_id"] = cid
         task["uid"] = uid
-        task["created"] = document.get("text_modified")
+        task["last_update"] = document.get("text_modified")
         task["data"] = document
         client.put(task)
         print(f"{pk} stored", flush=True)
@@ -52,7 +52,7 @@ def store_document(client, document):
             "pk": pk,
             "collection_id": cid,
             "uid": uid,
-            "created": document.get("text_modified"),
+            "last_update": document.get("text_modified"),
             "description": f"collection: {cid}, uid: {uid}, language: {language}",
             "data": document,
         }
