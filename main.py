@@ -39,6 +39,7 @@ class WebhookResource:
         secret = webhook_secrets[collection_id]
         signature = req.get_header("X-MYAX-SIGNATURE")
         if check_signature(signature, data, secret):
+            document["collection_id"] = collection_id
             resp.body = json.dumps(store_document(datastore_client, document))
         else:
             print(f"signature check failed for collection: {collection_id}")
