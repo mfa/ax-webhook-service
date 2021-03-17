@@ -26,13 +26,16 @@ except FileNotFoundError:
 
 
 class WebhookResource:
+    def __init__(self, collection_id=None):
+        self.collection_id = collection_id
+
     def on_get(self, req, resp):
         resp.body = json.dumps({"status": "OK"})
 
     def on_post(self, req, resp):
         data = req.bounded_stream.read()
         document = json.loads(data)
-        collection_id = document.get("collection_id")
+        collection_id = document.get("collection_id", self.collection_id)
         secret = webhook_secrets[collection_id]
         signature = req.get_header("X-MYAX-SIGNATURE")
         if check_signature(signature, data, secret):
@@ -44,3 +47,6 @@ class WebhookResource:
 
 api = falcon.API()
 api.add_route("/", WebhookResource())
+for item in webhook_secrets.keys():
+    print("register route", f"/{item}/")
+    api.add_route(f"/{item}", WebhookResource(collection_id=item))

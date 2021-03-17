@@ -66,7 +66,29 @@ def test_get(client):
 
 
 def test_post(client, signature, document):
-    result = client.simulate_post("/", headers=signature, json=document)
+    collection_id = document.get("collection_id")
+    result = client.simulate_post(f"/", headers=signature, json=document)
+    r = result.json
+    assert r.keys() == {
+        "pk",
+        "collection_id",
+        "uid",
+        "last_update",
+        "description",
+        "data",
+    }
+    assert r["data"] == document
+    assert r["uid"] == document.get("uid")
+    assert r["collection_id"] == document.get("collection_id")
+    assert r["pk"].split("|") == [
+        str(document.get("collection_id")),
+        document.get("uid"),
+    ]
+
+
+def test_post_instant(client, signature, document):
+    collection_id = document.get("collection_id")
+    result = client.simulate_post(f"/{collection_id}", headers=signature, json=document)
     r = result.json
     assert r.keys() == {
         "pk",
